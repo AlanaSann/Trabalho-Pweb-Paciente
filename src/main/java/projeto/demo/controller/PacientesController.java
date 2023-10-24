@@ -24,6 +24,7 @@ import projeto.demo.services.PacienteService;
 @RestController
 @RequestMapping("/pacientes")
 public class PacientesController {
+    
 @Autowired
 private PacienteService pacienteService;
 
@@ -36,6 +37,11 @@ private PacienteService pacienteService;
     public Page<Pacientes> listarPacientes(@PathVariable int page){
         Pageable pageable = PageRequest.of(page, 10,Sort.by(Sort.Direction.ASC,"nome"));
         return pacienteService.listarPacientes(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Pacientes> getPaciente(@PathVariable Long id){
+        return ResponseEntity.ok().body(pacienteService.encontrarPaciente(id));
     }
 
     @DeleteMapping("/deletar/{id}")
