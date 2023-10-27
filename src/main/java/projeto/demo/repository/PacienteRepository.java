@@ -12,4 +12,5 @@ import projeto.demo.model.Pacientes;
 public interface PacienteRepository extends JpaRepository<Pacientes,Long>{
     public Page<Pacientes>findAllByStatus(Boolean status, Pageable pageable); //procura por status  
     public Optional<Pacientes> findByIdAndStatus(Long id, Boolean status);
+    public Optional<Pacientes> findByCpfAndStatus(String cpf,Boolean status);
 }

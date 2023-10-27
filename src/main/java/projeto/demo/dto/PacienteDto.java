@@ -9,7 +9,5 @@ import projeto.demo.model.Endereco;
 public class PacienteDto {
     private String nome;
     private String email;
-    private String telefone;
     private String cpf;
-    private Endereco endereco;
 }

@@ -15,6 +15,7 @@ import projeto.demo.model.Endereco;
 import projeto.demo.model.Pacientes;
 import projeto.demo.repository.EnderecoRepository;
 import projeto.demo.repository.PacienteRepository;
+import projeto.demo.rules.Rules;
 
 @Service
 public class PacienteService {
@@ -47,8 +48,18 @@ public class PacienteService {
        return paciente.get();
     }
 
+    public Pacientes encontrarPaciente(String cpf){
+        Optional<Pacientes> paciente = pacienteRepository.findByCpfAndStatus(cpf,true);
+        if (paciente.isEmpty()) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Paciente não existe");
+        }
+        return paciente.get();
+    }
+
     public Pacientes attPacientes(Long id,Pacientes paciente){
+        Rules regras = new Rules();
         Pacientes pacienteAserEditado = encontrarPaciente(id);
+        regras.valida(paciente, pacienteAserEditado);
         pacienteAserEditado.setNome(paciente.getNome());
         pacienteAserEditado.setTelefone(paciente.getTelefone());
         pacienteAserEditado.setEndereco(paciente.getEndereco());

@@ -43,14 +43,19 @@ public class PacientesController {
     }
     
     @GetMapping("/listar/{page}")
-    public Page<Pacientes> listarPacientes(@PathVariable int page){
+    public ResponseEntity<Page<PacienteDto>> listar(@PathVariable int page){
         Pageable pageable = PageRequest.of(page, 10,Sort.by(Sort.Direction.ASC,"nome"));
-        return pacienteService.listarPacientes(pageable);
+        return ResponseEntity.ok().body(pacienteService.listarPacientes(pageable).map(p-> modelMapper.map(p,PacienteDto.class)));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pacientes> getPaciente(@PathVariable Long id){
-        return ResponseEntity.ok().body(pacienteService.encontrarPaciente(id));
+    public ResponseEntity<PacienteDto> getPaciente(@PathVariable Long id){
+        return ResponseEntity.ok().body(modelMapper.map(pacienteService.encontrarPaciente(id),PacienteDto.class));
+    }
+
+    @GetMapping("/buscar/{cpf}")
+    public ResponseEntity<PacienteDto> buscarPorCpf(@PathVariable String cpf){
+        return ResponseEntity.ok().body(modelMapper.map(pacienteService.encontrarPaciente(cpf),PacienteDto.class));
     }
 
     @DeleteMapping("/deletar/{id}")
@@ -60,7 +65,10 @@ public class PacientesController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Pacientes> atualizarPacientes(@PathVariable Long id,@RequestBody Pacientes paciente){
-        return ResponseEntity.created(null).body(pacienteService.attPacientes(id, paciente));
+    public ResponseEntity<PacienteDto> atualizarPacientes(@PathVariable Long id,@Valid @RequestBody PacienteForm paciente){
+        Pacientes pacienteConvertido = modelMapper.map(paciente, Pacientes.class);
+        pacienteService.attPacientes(id, pacienteConvertido);
+        PacienteDto pacienteDto = modelMapper.map(pacienteConvertido,PacienteDto.class);
+        return ResponseEntity.created(null).body(pacienteDto);
     }
 }
