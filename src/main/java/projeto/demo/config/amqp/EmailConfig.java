@@ -25,6 +25,7 @@ public class EmailConfig {
     public Jackson2JsonMessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
+    
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
             Jackson2JsonMessageConverter messageConverter) {
