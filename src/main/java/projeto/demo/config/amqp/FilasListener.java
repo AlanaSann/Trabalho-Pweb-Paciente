@@ -15,7 +15,10 @@ public class FilasListener {
 
     @RabbitListener(queues = "AgendamentosQueue")
     public void listenerMensagens(Mensagem mensagem) {
-        Pacientes paciente = pacienteService.encontrarPaciente(new String(mensagem.getCpfPaciente()));
-        pacienteService.enviarEmail(paciente.getEmail(), "Marcação de consulta", mensagem.toString());
+        // Pacientes paciente = pacienteService.encontrarPaciente((mensagem.getCpf()));
+        System.out.println(mensagem.getCpf());
+        pacienteService.enviarEmail("alana.sann03@gmail.com", "Gosto muito de você",
+                "Consegui?");
+
     }
 }

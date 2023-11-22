@@ -10,9 +10,9 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @Setter
-public class Mensagem implements Serializable {
-    private String cpfPaciente;
+public class Mensagem {
+    private String cpf;
     private String crmMedico;
-    private LocalDateTime dataConsulta;
+    private String dataConsulta;
 
 }
